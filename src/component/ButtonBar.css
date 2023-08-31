@@ -1,0 +1,4 @@
+.button-bar {
+    display: inline-flex;
+    gap: 1rem;
+}

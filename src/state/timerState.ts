@@ -21,15 +21,20 @@ export function addNewTimer(name: string) {
 let focusedTimer: Timer | undefined = undefined
 
 export function focusTimer(timer: Timer) {
-    if (focusedTimer !== undefined) {
-        focusedTimer.isFocused.set(false)
-        endInterval(focusedTimer)
-    }
+    unfocusTimer()
 
     startInterval(timer)
 
     focusedTimer = timer
     focusedTimer.isFocused.set(true)
+}
+
+function unfocusTimer() {
+    if (focusedTimer !== undefined) {
+        focusedTimer.isFocused.set(false)
+        endInterval(focusedTimer)
+        focusedTimer = undefined
+    }
 }
 
 window.addEventListener("load", () => {
@@ -40,11 +45,17 @@ window.addEventListener("load", () => {
 
     const storedTimers: LocalStorageTimers = JSON.parse(storedTimerJson)
 
-    for (const timer of storedTimers) {
-        timers.push(timerFromStatic(timer))
+    for (const staticTimer of storedTimers) {
+        const timer = timerFromStatic(staticTimer)
+        timers.push(timer)
+        if (timer.isFocused.value) {
+            focusTimer(timer)
+        }
     }
 })
+
 window.addEventListener("beforeunload", () => {
+    unfocusTimer()
     localStorage.setItem("timers", timersToJson(timers))
 })
 

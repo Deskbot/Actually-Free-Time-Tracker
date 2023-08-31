@@ -20,7 +20,7 @@ function Timer(observableTimer: Observable<Timer>): Node {
 }
 
 function Name(name: Observable<string>) {
-    function onChange(this: HTMLInputElement) {
+    function onInput(this: HTMLInputElement) {
         name.set(this.value)
     }
 
@@ -28,10 +28,12 @@ function Name(name: Observable<string>) {
         type: "text",
         value: name.value,
     }, {
-        change: onChange,
+        input: onInput,
     }, [])
 
-    name.onChange(newName => elem.value = newName)
+    name.onChange(newName => {
+        elem.value = newName
+    })
 
     return elem
 }

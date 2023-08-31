@@ -1,10 +1,11 @@
 import { Observable, ObservableArray, observable, observableArray } from "../observable/observable";
+import { tripleEquals } from "../utils/function";
 
 let nextTimerId = 0
 
 export type Timer = {
     id: number
-    name: string
+    name: Observable<string>
     milliseconds: number
 }
 
@@ -13,7 +14,7 @@ export const timers: ObservableArray<Observable<Timer>> = observableArray([]);
 export function addNewTimer(name: string) {
     const timer: Timer = {
         id: nextTimerId++,
-        name,
+        name: observable(name, tripleEquals),
         milliseconds: 0,
     }
 

@@ -1,4 +1,4 @@
-import { div } from "ariamis";
+import { div, input } from "ariamis";
 import { fromObservable, fromObservableArray } from "../dom/reactive";
 import { Observable, mapObservableArray } from "../observable/observable";
 import { Timer, timers } from "../state/timer";
@@ -10,8 +10,21 @@ export function Timers(): Node {
 function Timer(observableTimer: Observable<Timer>): Node {
     return fromObservable(observableTimer, timer => {
         return div([
-            timer.name,
-            timer.milliseconds
+            Name(timer.name),
+            timer.milliseconds,
         ])
     })
+}
+
+function Name(timer: Observable<string>) {
+    function onChange(this: HTMLInputElement) {
+        timer.set(this.value)
+    }
+
+    return input({
+        type: "text",
+        value: timer.value,
+    }, {
+        change: onChange,
+    }, [])
 }

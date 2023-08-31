@@ -6,14 +6,15 @@ import { Observable, mapObservableArray, observable } from "../observable/observ
 import { timers } from "../state/timerState";
 import { tripleEquals } from "../utils/function";
 import { ChangeFocusButton } from "./ChangeFocusButton";
+import "./Timers.css"
 
 export function Timers(): Node {
-    return fromObservableArray(div(), mapObservableArray(timers, Timer))
+    return fromObservableArray(div({ className: "timers" }), mapObservableArray(timers, Timer))
 }
 
 function Timer(observableTimer: Observable<Timer>): Node {
     return fromObservable(observableTimer, timer => {
-        return div([
+        return div({ className: "timer" }, [
             Name(timer.name),
             TimeDisplay(timer),
             ChangeFocusButton(timer),

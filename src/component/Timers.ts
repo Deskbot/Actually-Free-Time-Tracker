@@ -1,7 +1,8 @@
 import { div, input } from "ariamis";
 import { fromObservable, fromObservableArray } from "../dom/reactive";
+import { Timer } from "../domain/Timer";
 import { Observable, mapObservableArray } from "../observable/observable";
-import { Timer, timers } from "../state/timer";
+import { timers } from "../state/timerState";
 import { ChangeFocusButton } from "./ChangeFocusButton";
 
 export function Timers(): Node {

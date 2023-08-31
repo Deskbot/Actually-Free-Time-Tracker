@@ -1,5 +1,5 @@
 import { button } from "ariamis";
-import { addNewTimer } from "../state/timer";
+import { addNewTimer } from "../state/timerState";
 
 export function AddTimerButton() {
     function onClick() {

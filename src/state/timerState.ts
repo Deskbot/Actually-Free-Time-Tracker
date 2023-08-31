@@ -1,5 +1,5 @@
 import { Observable, ObservableArray, observable, observableArray } from "../observable/observable";
-import { Timer, newTimerByName } from "../domain/Timer";
+import { Timer, newTimerByName, timerEquals } from "../domain/Timer";
 
 let focusedTimer: Timer | undefined = undefined;
 
@@ -7,16 +7,16 @@ export const timers: ObservableArray<Observable<Timer>> = observableArray([]);
 
 export function addNewTimer(name: string) {
     const timer = newTimerByName(name)
-    timers.push(observable(timer, timersEqual))
-}
-
-export function focusTimer(timer: Timer) {
-    focusedTimer = timer
-    startCounting()
+    timers.push(observable(timer, timerEquals))
 }
 
 let counterInterval: number | undefined = undefined
-function startCounting() {
+
+export function focusTimer(timer: Timer) {
+    focusedTimer
+
+    focusedTimer = timer
+
     if (counterInterval !== undefined) {
         clearInterval(counterInterval)
     }
@@ -25,10 +25,4 @@ function startCounting() {
 
 
     }, 1000)
-}
-
-function timersEqual(timer1: Timer, timer2: Timer): boolean {
-    return timer1.id === timer2.id
-        && timer1.name === timer2.name
-        && timer1.milliseconds === timer2.milliseconds
 }

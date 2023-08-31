@@ -1,9 +1,9 @@
 
 export type Interval = {
     start: number
-    end: number
+    end: number | undefined
 }
 
 export function intervalDuration(interval: Interval) {
-    return interval.end - interval.start
+    return (interval.end ?? new Date().getTime()) - interval.start
 }

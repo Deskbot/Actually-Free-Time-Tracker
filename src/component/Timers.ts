@@ -1,10 +1,11 @@
-import { div, input, span, tr } from "ariamis";
+import { div, input, span } from "ariamis";
 import { fromObservable, fromObservableArray } from "../dom/reactive";
 import { Timer } from "../domain/Timer";
+import { formatTime } from "../domain/format";
 import { Observable, mapObservableArray, observable } from "../observable/observable";
 import { timers } from "../state/timerState";
-import { ChangeFocusButton } from "./ChangeFocusButton";
 import { tripleEquals } from "../utils/function";
+import { ChangeFocusButton } from "./ChangeFocusButton";
 
 export function Timers(): Node {
     return fromObservableArray(div(), mapObservableArray(timers, Timer))
@@ -44,32 +45,10 @@ function TimeDisplay(timer: Timer) {
 
     updateTime();
     function updateTime() {
-        timeString.set(makeTimeString(timer.milliseconds))
+        timeString.set(formatTime(timer.milliseconds))
     }
 
     setInterval(updateTime, 500)
 
     return fromObservable(timeString, str => span([str]))
-}
-
-function makeTimeString(milliseconds: number) {
-    const seconds = Math.floor(milliseconds / 1000)
-    if (seconds < 60) {
-        return seconds.toString().padStart(2) + " seconds"
-    }
-
-    const minutes = Math.floor(seconds / 60)
-    const minutesStr = minutes.toString().padStart(2) + " minutes"
-
-    if (minutes < 10) {
-        const andSeconds = seconds % 60
-        return minutesStr + " " + andSeconds.toString().padStart(2) + " seconds"
-    }
-    if (minutes < 60) {
-        return minutesStr
-    }
-
-    const hours = Math.floor(minutes / 60)
-    const andMinutes = minutes % 60
-    return hours.toString().padStart(2) + " hours " + andMinutes.toString().padStart(2) + " minutes"
 }

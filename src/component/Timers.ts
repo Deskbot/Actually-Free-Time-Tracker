@@ -2,7 +2,7 @@ import { div, input, rawHtml, span } from "ariamis";
 import { fromObservable, fromObservableArray } from "../dom/reactive";
 import { Timer } from "../domain/Timer";
 import { formatTime } from "../domain/format";
-import { Observable, mapObservableArray, observable } from "../observable/observable";
+import { Observable, mapObservable, mapObservableArray, observable } from "../observable/observable";
 import { timers } from "../state/timerState";
 import { tripleEquals } from "../utils/function";
 import { ChangeFocusButton } from "./ChangeFocusButton";
@@ -48,14 +48,7 @@ function Name(name: Observable<string>) {
 }
 
 function TimeDisplay(timer: Timer) {
-    const timeString = observable("", tripleEquals)
-
-    updateTime();
-    function updateTime() {
-        timeString.set(formatTime(timer.milliseconds))
-    }
-
-    setInterval(updateTime, 500)
+    const timeString = mapObservable(timer.milliseconds, formatTime, tripleEquals);
 
     return fromObservable(timeString, str => span({ className: "time" }, [rawHtml(str)]))
 }

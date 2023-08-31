@@ -1,6 +1,5 @@
-import { Interval } from "../domain/Interval";
-import { Timer, TimerStatic, endInterval, newTimerByName, startInterval, timerEquals, timerFromStatic } from "../domain/Timer";
-import { Observable, ObservableArray, observable, observableArray } from "../observable/observable";
+import { Timer, TimerStatic, endInterval, newTimerByName, startInterval, timerFromStatic } from "../domain/Timer";
+import { ObservableArray, observableArray } from "../observable/observable";
 
 type LocalStorageTimers = TimerStatic[]
 
@@ -81,7 +80,6 @@ function timerToObj(timer: Timer): TimerStatic {
         id: timer.id,
         name: timer.name.value,
         isFocused: timer.isFocused.value,
-        milliseconds: timer.milliseconds,
         intervals: timer.intervals,
     }
 }

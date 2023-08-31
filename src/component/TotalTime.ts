@@ -10,7 +10,7 @@ export function TotalTime() {
 
     updateTime();
     function updateTime() {
-        timeString.set(formatTime(timers.elems.reduce((tot,next) => tot + next.milliseconds, 0)))
+        timeString.set(formatTime(timers.elems.reduce((tot,next) => tot + next.milliseconds.value, 0)))
     }
 
     setInterval(updateTime, 500)

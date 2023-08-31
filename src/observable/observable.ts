@@ -1,4 +1,4 @@
-import { Equality } from "../utils/function"
+import { Equality, tripleEquals } from "../utils/function"
 import { Events } from "./events"
 
 export type ObservableArray<T> = {
@@ -15,7 +15,7 @@ export type Observable<T> = {
     set(newVal: T): void
 }
 
-export function observable<T>(initialValue: T, isEqual: (t1: T, t2: T) => boolean): Observable<T> {
+export function observable<T>(initialValue: T, isEqual: Equality<T> = tripleEquals): Observable<T> {
     const events = new Events<T>()
 
     return {
@@ -57,6 +57,18 @@ export function observableArray<T>(arr: T[]): ObservableArray<T> {
     }
 }
 
+export function mapObservable<T, U>(
+    obs: Observable<T>,
+    mapper: (val: T) => U,
+    equals: Equality<U> = tripleEquals
+): Observable<U> {
+    const result = observable(mapper(obs.value), equals)
+
+    obs.onChange(newVal => result.set(mapper(newVal)))
+
+    return result
+}
+
 export function mapObservableArray<T, U>(arr: ObservableArray<T>, mapper: (val: T) => U): ObservableArray<U> {
     const resultArr = observableArray(arr.elems.map(mapper))
 
@@ -71,7 +83,7 @@ export function reduceObservableArray<T, U>(
     initial: U,
     onPush: (oldResult: U, val: T) => U,
     onRemove: (oldResult: U, val: T, i: number) => U,
-    equals: Equality<U>,
+    equals: Equality<U> = tripleEquals,
 ): Observable<U> {
     let result = observable(initial, equals)
 

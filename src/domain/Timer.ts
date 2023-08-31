@@ -1,12 +1,12 @@
 import { Observable, observable } from "../observable/observable";
 import { tripleEquals } from "../utils/function";
-import { Interval, intervalDuration } from "./Interval";
+import { Interval, sumIntervalDurations } from "./Interval";
 
 export type Timer = {
     readonly id: number
     readonly name: Observable<string>
     readonly isFocused: Observable<boolean>
-    readonly milliseconds: number
+    readonly milliseconds: Observable<number>
     readonly intervals: Interval[]
 }
 
@@ -14,7 +14,6 @@ export type TimerStatic = {
     id: number
     name: string
     isFocused: boolean
-    milliseconds: number
     intervals: Interval[]
 }
 
@@ -35,6 +34,9 @@ class TimerImpl implements Timer {
     readonly name: Observable<string>
     readonly intervals: Interval[]
     readonly isFocused: Observable<boolean>
+    readonly milliseconds: Observable<number>
+
+    private interval: number | undefined
 
     constructor(staticTimer?: TimerStatic) {
         if (staticTimer) {
@@ -42,17 +44,29 @@ class TimerImpl implements Timer {
             this.name = observable(staticTimer.name, tripleEquals)
             this.intervals = staticTimer.intervals
             this.isFocused = observable(staticTimer.isFocused, tripleEquals)
-            return
+        } else {
+            this.id = nextTimerId++
+            this.name = observable("", tripleEquals)
+            this.isFocused = observable(false, tripleEquals)
+            this.intervals = []
         }
 
-        this.id = nextTimerId++
-        this.name = observable("", tripleEquals)
-        this.isFocused = observable(false, tripleEquals)
-        this.intervals = []
+        this.milliseconds = observable(sumIntervalDurations(this.intervals), tripleEquals)
+
+        this.onFocusChange(this.isFocused.value)
+        this.isFocused.onChange(isFocused => this.onFocusChange(isFocused))
     }
 
-    get milliseconds() {
-        return this.intervals.reduce((prev, nextInterval) => prev + intervalDuration(nextInterval), 0)
+    private onFocusChange(isFocused: boolean) {
+        if (isFocused) {
+            this.interval = window.setInterval(() => {
+                this.milliseconds.set(sumIntervalDurations(this.intervals))
+            }, 500)
+        } else {
+            if (this.interval !== undefined) {
+                this.interval = undefined
+            }
+        }
     }
 }
 

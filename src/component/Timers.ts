@@ -42,9 +42,12 @@ function Name(name: Observable<string>) {
 function TimeDisplay(timer: Timer) {
     const timeString = observable("", tripleEquals)
 
-    setInterval(() => {
+    updateTime();
+    function updateTime() {
         timeString.set(makeTimeString(timer.milliseconds))
-    }, 500)
+    }
+
+    setInterval(updateTime, 500)
 
     return fromObservable(timeString, str => span([str]))
 }

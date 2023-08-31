@@ -3,6 +3,7 @@ import { ButtonBar } from "./ButtonBar";
 import "./Main.css";
 import { Timers } from "./Timers";
 import { TotalTime } from "./TotalTime";
+import { Graph } from "./Graph";
 
 export function Main() {
     return main([
@@ -10,5 +11,6 @@ export function Main() {
         TotalTime(),
         Timers(),
         ButtonBar(),
+        Graph(),
     ])
 }

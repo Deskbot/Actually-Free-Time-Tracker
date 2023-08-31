@@ -1,0 +1,12 @@
+.graph {
+    display: flex;
+    height: 500px;
+    width: 100%;
+    overflow-x: scroll;
+}
+
+.bar {
+    background-color: rgb(150, 202, 211);
+    flex-shrink: 1;
+    text-orientation: sideways;
+}

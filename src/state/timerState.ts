@@ -1,7 +1,5 @@
-import { Observable, ObservableArray, observable, observableArray } from "../observable/observable";
-import { Timer, newTimerByName, timerEquals } from "../domain/Timer";
-
-let focusedTimer: Timer | undefined = undefined;
+import { Observable, ObservableArray, observable, observableArray } from "../observable/observable"
+import { Timer, endInterval, newTimerByName, startInterval, timerEquals } from "../domain/Timer"
 
 export const timers: ObservableArray<Observable<Timer>> = observableArray([]);
 
@@ -10,19 +8,14 @@ export function addNewTimer(name: string) {
     timers.push(observable(timer, timerEquals))
 }
 
-let counterInterval: number | undefined = undefined
+let focusedTimer: Timer | undefined = undefined
 
 export function focusTimer(timer: Timer) {
-    focusedTimer
-
-    focusedTimer = timer
-
-    if (counterInterval !== undefined) {
-        clearInterval(counterInterval)
+    if (focusedTimer !== undefined) {
+        endInterval(focusedTimer)
     }
 
-    counterInterval = window.setInterval(() => {
+    startInterval(timer)
 
-
-    }, 1000)
+    focusedTimer = timer
 }

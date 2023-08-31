@@ -1,6 +1,17 @@
+.timers {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
 .timer {
     display: flex;
+    gap: 1rem;
     justify-content: space-between;
+}
+
+.timer input[type=text] {
+    flex-grow: 1;
 }
 
 .timer-time-and-button {

@@ -8,7 +8,7 @@ export function Main() {
     return main([
         h1(["Time tracker"]),
         TotalTime(),
-        Timers(),
         AddTimerButton(),
+        Timers(),
     ])
 }

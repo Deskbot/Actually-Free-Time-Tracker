@@ -16,10 +16,8 @@ function Timer(observableTimer: Observable<Timer>): Node {
     return fromObservable(observableTimer, timer => {
         return div({ className: "timer" }, [
             Name(timer.name),
-            div({ className: "timer-time-and-button" }, [
-                TimeDisplay(timer),
-                ChangeFocusButton(timer),
-            ]),
+            TimeDisplay(timer),
+            ChangeFocusButton(timer),
         ])
     })
 }

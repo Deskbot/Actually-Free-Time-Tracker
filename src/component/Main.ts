@@ -10,7 +10,6 @@ export function Main() {
         h1(["Time tracker"]),
         TotalTime(),
         div(),
-        AddTimerButton(),
         Timers(),
         div(),
         ButtonBar(),

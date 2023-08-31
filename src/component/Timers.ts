@@ -7,9 +7,13 @@ import { timers } from "../state/timerState";
 import { tripleEquals } from "../utils/function";
 import { ChangeFocusButton } from "./ChangeFocusButton";
 import "./Timers.css";
+import { AddTimerButton } from "./AddTimerButton";
 
 export function Timers(): Node {
-    return fromObservableArray(div({ className: "timers" }), mapObservableArray(timers, Timer))
+    return div({ className: "timers" }, [
+        AddTimerButton(),
+        fromObservableArray(mapObservableArray(timers, Timer))
+    ])
 }
 
 function Timer(timer: Timer): Node {

@@ -12,8 +12,8 @@ export function fromObservable<T>(observable: Observable<T>, mapper: (val: T) =>
     return elem
 }
 
-export function fromObservableArray(node: Node, arr: ObservableArray<Node>): Node {
-    removeAllChildren(node)
+export function fromObservableArray(arr: ObservableArray<Node>): Node {
+    const node = contents()
 
     for (const elem of arr.elems) {
         node.appendChild(elem)

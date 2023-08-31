@@ -19,15 +19,19 @@ function Timer(observableTimer: Observable<Timer>): Node {
     })
 }
 
-function Name(timer: Observable<string>) {
+function Name(name: Observable<string>) {
     function onChange(this: HTMLInputElement) {
-        timer.set(this.value)
+        name.set(this.value)
     }
 
-    return input({
+    const elem = input({
         type: "text",
-        value: timer.value,
+        value: name.value,
     }, {
         change: onChange,
     }, [])
+
+    name.onChange(newName => elem.value = newName)
+
+    return elem
 }

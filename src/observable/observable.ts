@@ -15,7 +15,7 @@ export type Observable<T> = {
     set(newVal: T): void
 }
 
-export function observable<T>(initialValue: T, isChanged: (t1: T, t2: T) => boolean): Observable<T> {
+export function observable<T>(initialValue: T, isEqual: (t1: T, t2: T) => boolean): Observable<T> {
     const events = new Events<T>()
 
     return {
@@ -24,7 +24,7 @@ export function observable<T>(initialValue: T, isChanged: (t1: T, t2: T) => bool
             events.listen(handler)
         },
         set(newVal) {
-            if (isChanged(newVal, this.value)) {
+            if (!isEqual(newVal, this.value)) {
                 this.value = newVal
                 events.emit(newVal)
             }

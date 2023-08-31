@@ -44,7 +44,7 @@ export function observableArray<T>(arr: T[]): ObservableArray<T> {
         },
         remove(i) {
             if (i < this.elems.length) {
-                const val = this.elems.splice(i, 0)
+                const val = this.elems.splice(i, 1)
                 removeEvents.emit([val[0], i])
             }
         },

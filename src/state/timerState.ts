@@ -18,6 +18,12 @@ export function addNewTimer(name: string) {
     timers.push(timer)
 }
 
+export function resetAllTimers() {
+    while (timers.elems.length > 0) {
+        timers.remove(0)
+    }
+}
+
 let focusedTimer: Timer | undefined = undefined
 
 export function focusTimer(timer: Timer) {

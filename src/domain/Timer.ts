@@ -1,10 +1,11 @@
-import { Observable, ObservableArray, mapObservableArray, observable, observableArray, reduceObservableArray } from "../observable/observable";
+import { Observable, observable } from "../observable/observable";
 import { tripleEquals } from "../utils/function";
 import { Interval, intervalDuration } from "./Interval";
 
 export type Timer = {
     readonly id: number
     readonly name: Observable<string>
+    readonly isFocused: Observable<boolean>
     readonly milliseconds: number
     readonly intervals: Interval[]
 }
@@ -21,10 +22,12 @@ class TimerImpl implements Timer {
     readonly id: number
     readonly name: Observable<string>
     readonly intervals: Interval[]
+    readonly isFocused: Observable<boolean>
 
     constructor() {
         this.id = nextTimerId++
         this.name = observable("", tripleEquals)
+        this.isFocused = observable(false, tripleEquals)
         this.intervals = []
     }
 

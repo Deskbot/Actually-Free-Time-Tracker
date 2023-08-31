@@ -1,4 +1,4 @@
-import { div, input, rawHtml, span } from "ariamis";
+import { div, input, rawHtml } from "ariamis";
 import { fromObservable, fromObservableArray } from "../dom/reactive";
 import { Timer } from "../domain/Timer";
 import { formatTime } from "../domain/format";
@@ -6,20 +6,18 @@ import { Observable, mapObservableArray, observable } from "../observable/observ
 import { timers } from "../state/timerState";
 import { tripleEquals } from "../utils/function";
 import { ChangeFocusButton } from "./ChangeFocusButton";
-import "./Timers.css"
+import "./Timers.css";
 
 export function Timers(): Node {
     return fromObservableArray(div({ className: "timers" }), mapObservableArray(timers, Timer))
 }
 
-function Timer(observableTimer: Observable<Timer>): Node {
-    return fromObservable(observableTimer, timer => {
-        return div({ className: "timer" }, [
-            Name(timer.name),
-            TimeDisplay(timer),
-            ChangeFocusButton(timer),
-        ])
-    })
+function Timer(timer: Timer): Node {
+    return div({ className: "timer" }, [
+        Name(timer.name),
+        TimeDisplay(timer),
+        ChangeFocusButton(timer),
+    ])
 }
 
 function Name(name: Observable<string>) {

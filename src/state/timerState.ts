@@ -1,8 +1,7 @@
-import { Observable, ObservableArray, observable, observableArray, reduceObservableArray } from "../observable/observable"
-import { Timer, endInterval, newTimerByName, startInterval, timerEquals } from "../domain/Timer"
-import { tripleEquals } from "../utils/function";
+import { Timer, endInterval, newTimerByName, startInterval, timerEquals } from "../domain/Timer";
+import { Observable, ObservableArray, observable, observableArray } from "../observable/observable";
 
-export const timers: ObservableArray<Observable<Timer>> = observableArray([]);
+export const timers: ObservableArray<Timer> = observableArray([]);
 // export const totalMilliseconds = reduceObservableArray(
 //     timers,
 //     0,
@@ -13,17 +12,19 @@ export const timers: ObservableArray<Observable<Timer>> = observableArray([]);
 
 export function addNewTimer(name: string) {
     const timer = newTimerByName(name)
-    timers.push(observable(timer, timerEquals))
+    timers.push(timer)
 }
 
 let focusedTimer: Timer | undefined = undefined
 
 export function focusTimer(timer: Timer) {
     if (focusedTimer !== undefined) {
+        focusedTimer.isFocused.set(false)
         endInterval(focusedTimer)
     }
 
     startInterval(timer)
 
     focusedTimer = timer
+    focusedTimer.isFocused.set(true)
 }

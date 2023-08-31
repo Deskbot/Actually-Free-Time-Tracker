@@ -10,6 +10,14 @@ export type Timer = {
     readonly intervals: Interval[]
 }
 
+export type TimerStatic = {
+    id: number
+    name: string
+    isFocused: boolean
+    milliseconds: number
+    intervals: Interval[]
+}
+
 let nextTimerId = 0
 
 export function newTimerByName(name: string): Timer {
@@ -18,13 +26,25 @@ export function newTimerByName(name: string): Timer {
     return timer
 }
 
+export function timerFromStatic(staticTimer: TimerStatic) {
+    return new TimerImpl(staticTimer)
+}
+
 class TimerImpl implements Timer {
     readonly id: number
     readonly name: Observable<string>
     readonly intervals: Interval[]
     readonly isFocused: Observable<boolean>
 
-    constructor() {
+    constructor(staticTimer?: TimerStatic) {
+        if (staticTimer) {
+            this.id = staticTimer.id
+            this.name = observable(staticTimer.name, tripleEquals)
+            this.intervals = staticTimer.intervals
+            this.isFocused = observable(staticTimer.isFocused, tripleEquals)
+            return
+        }
+
         this.id = nextTimerId++
         this.name = observable("", tripleEquals)
         this.isFocused = observable(false, tripleEquals)

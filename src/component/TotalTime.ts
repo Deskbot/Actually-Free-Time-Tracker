@@ -17,6 +17,6 @@ export function TotalTime() {
 
     return fromObservable(
         timeString,
-        t => span(["Total", t]),
+        t => span(["Total: ", t]),
     )
 }

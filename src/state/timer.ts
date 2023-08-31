@@ -1,30 +1,12 @@
 import { Observable, ObservableArray, observable, observableArray } from "../observable/observable";
-import { tripleEquals } from "../utils/function";
-import { Interval, intervalDuration } from "./Interval";
-
-let nextTimerId = 0
+import { Timer, newTimerByName } from "../domain/Timer";
 
 let focusedTimer: Timer | undefined = undefined;
-
-export type Timer = {
-    readonly id: number
-    readonly name: Observable<string>
-    readonly milliseconds: number
-    readonly intervals: Interval[]
-}
 
 export const timers: ObservableArray<Observable<Timer>> = observableArray([]);
 
 export function addNewTimer(name: string) {
-    const timer: Timer = {
-        id: nextTimerId++,
-        name: observable(name, tripleEquals),
-        get milliseconds() {
-            return this.intervals.reduce((prev, interval) => prev + intervalDuration(interval), 0)
-        },
-        intervals: [],
-    }
-
+    const timer = newTimerByName(name)
     timers.push(observable(timer, timersEqual))
 }
 

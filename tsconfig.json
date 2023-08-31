@@ -1,0 +1,24 @@
+{
+    "compilerOptions": {
+        "isolatedModules": true,
+        "lib": [
+            "DOM",
+            "ESNext"
+        ],
+        "module": "ESNext",
+        "moduleResolution": "Node",
+        "noImplicitReturns": true,
+        "outDir": "./website/js",
+        "skipLibCheck": true,
+        "sourceMap": true,
+        "strict": true,
+        "target": "ES2020"
+    },
+    "include": [
+        ".",
+    ],
+    "exclude": [
+        "./website",
+        "node_modules"
+    ]
+}

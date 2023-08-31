@@ -11,7 +11,7 @@ function Timer(observableTimer: Observable<Timer>): Node {
     return fromObservable(observableTimer, timer => {
         return div([
             timer.name,
-            timer.seconds
+            timer.milliseconds
         ])
     })
 }

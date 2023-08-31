@@ -5,16 +5,16 @@ let nextTimerId = 0
 export type Timer = {
     id: number
     name: string
-    seconds: number
+    milliseconds: number
 }
 
 export const timers: ObservableArray<Observable<Timer>> = observableArray([]);
 
 export function addNewTimer(name: string) {
-    const timer = {
+    const timer: Timer = {
         id: nextTimerId++,
         name,
-        seconds: 0,
+        milliseconds: 0,
     }
 
     timers.push(observable(timer, timersEqual))
@@ -22,6 +22,8 @@ export function addNewTimer(name: string) {
 
 function timersEqual(timer1: Timer, timer2: Timer): boolean {
     return timer1.id === timer2.id
+        && timer1.name === timer2.name
+        && timer1.milliseconds === timer2.milliseconds
 }
 
 addNewTimer("poop")

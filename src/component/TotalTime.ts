@@ -1,4 +1,4 @@
-import { span } from "ariamis";
+import { rawHtml, span } from "ariamis";
 import { fromObservable } from "../dom/reactive";
 import { formatTime } from "../domain/format";
 import { timers } from "../state/timerState";
@@ -17,6 +17,6 @@ export function TotalTime() {
 
     return fromObservable(
         timeString,
-        t => span(["Total: ", t]),
+        t => span(["Total: ", rawHtml(t)]),
     )
 }

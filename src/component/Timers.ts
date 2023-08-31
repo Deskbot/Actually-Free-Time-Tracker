@@ -1,4 +1,4 @@
-import { div, input, span } from "ariamis";
+import { div, input, rawHtml, span } from "ariamis";
 import { fromObservable, fromObservableArray } from "../dom/reactive";
 import { Timer } from "../domain/Timer";
 import { formatTime } from "../domain/format";
@@ -51,5 +51,5 @@ function TimeDisplay(timer: Timer) {
 
     setInterval(updateTime, 500)
 
-    return fromObservable(timeString, str => span([str]))
+    return fromObservable(timeString, str => rawHtml(str))
 }

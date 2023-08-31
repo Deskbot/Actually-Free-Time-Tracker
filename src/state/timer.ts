@@ -23,3 +23,6 @@ export function addNewTimer(name: string) {
 function timersEqual(timer1: Timer, timer2: Timer): boolean {
     return timer1.id === timer2.id
 }
+
+addNewTimer("poop")
+addNewTimer("peep")

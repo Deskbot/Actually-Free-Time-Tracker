@@ -1,14 +1,22 @@
 import { span } from "ariamis";
 import { fromObservable } from "../dom/reactive";
 import { formatTime } from "../domain/format";
-import { totalMilliseconds } from "../state/timerState";
+import { timers } from "../state/timerState";
+import { observable } from "../observable/observable";
+import { tripleEquals } from "../utils/function";
 
 export function TotalTime() {
-    return span([
-        "Total",
-        fromObservable(
-            totalMilliseconds,
-            t => span([formatTime(t)]),
-        )
-    ])
+    const timeString = observable("", tripleEquals)
+
+    updateTime();
+    function updateTime() {
+        timeString.set(formatTime(timers.elems.reduce((tot,next) => tot + next.value.milliseconds, 0)))
+    }
+
+    setInterval(updateTime, 500)
+
+    return fromObservable(
+        timeString,
+        t => span(["Total", t]),
+    )
 }

@@ -1,8 +1,8 @@
 import { div, span } from "ariamis";
 import { fromObservable, fromObservableArray } from "../dom/reactive";
 import { Timer } from "../domain/Timer";
-import { mapObservableArray } from "../observable/observable";
-import { timers } from "../state/timerState";
+import { mapObservableArray, observable } from "../observable/observable";
+import { highestTimerMilliseconds, timers } from "../state/timerState";
 import "./Graph.css"
 
 export function Graph() {

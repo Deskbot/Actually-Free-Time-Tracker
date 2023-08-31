@@ -1,5 +1,5 @@
 import { Timer, TimerStatic, endInterval, newTimerByName, startInterval, timerFromStatic } from "../domain/Timer";
-import { ObservableArray, observableArray } from "../observable/observable";
+import { ObservableArray, observableArray, reduceObservableArray } from "../observable/observable";
 
 type LocalStorageTimers = TimerStatic[]
 
@@ -11,6 +11,12 @@ export const timers: ObservableArray<Timer> = observableArray([]);
 //     (oldResult, oldTimer) => oldResult - oldTimer.value.milliseconds,
 //     tripleEquals,
 // )
+export const highestTimerMilliseconds = reduceObservableArray(
+    timers,
+    0,
+    (oldResult, newTimer) => oldResult >= newTimer.milliseconds.value ? oldResult : newTimer.milliseconds.value,
+    () => timers.elems.reduce((a,b) => Math.min(a,b.milliseconds.value), 0),
+)
 
 export function addNewTimer(name: string) {
     const timer = newTimerByName(name)

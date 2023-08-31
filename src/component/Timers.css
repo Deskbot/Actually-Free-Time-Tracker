@@ -10,11 +10,15 @@
     justify-content: space-between;
 }
 
-.timer input[type=text] {
-    flex-grow: 1;
+.timer.focus input[type=text] {
+    font-weight: bold;
 }
 
-.timer-time-and-button {
-    display: flex;
-    gap: 1rem;
+.timer.focus .time {
+    font-weight: bold;
+}
+
+.timer input[type=text] {
+    flex-grow: 1;
+    background-color: none;
 }

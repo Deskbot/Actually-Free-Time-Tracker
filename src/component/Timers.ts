@@ -1,4 +1,4 @@
-import { div, input, rawHtml } from "ariamis";
+import { div, input, rawHtml, span } from "ariamis";
 import { fromObservable, fromObservableArray } from "../dom/reactive";
 import { Timer } from "../domain/Timer";
 import { formatTime } from "../domain/format";
@@ -13,11 +13,15 @@ export function Timers(): Node {
 }
 
 function Timer(timer: Timer): Node {
-    return div({ className: "timer" }, [
+    const elem = div({ className: "timer" }, [
         Name(timer.name),
         TimeDisplay(timer),
         ChangeFocusButton(timer),
     ])
+
+    timer.isFocused.onChange(isFocused => elem.classList.toggle("focus", isFocused))
+
+    return elem
 }
 
 function Name(name: Observable<string>) {
@@ -49,5 +53,5 @@ function TimeDisplay(timer: Timer) {
 
     setInterval(updateTime, 500)
 
-    return fromObservable(timeString, str => rawHtml(str))
+    return fromObservable(timeString, str => span({ className: "time" }, [rawHtml(str)]))
 }

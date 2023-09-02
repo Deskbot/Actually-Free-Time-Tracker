@@ -1,24 +1,36 @@
 import { Timer, TimerStatic, endInterval, newTimerByName, startInterval, timerFromStatic } from "../domain/Timer";
-import { ObservableArray, observableArray, reduceObservableArray } from "../observable/observable";
+import { Observable, ObservableArray, mapObservable, mapObservableArray, observableArray, reduceObservableArray } from "../observable/observable";
 
 type LocalStorageTimers = TimerStatic[]
 
-export const timers: ObservableArray<Timer> = observableArray([]);
-export const totalMilliseconds = reduceObservableArray(
+export const timers: ObservableArray<Timer> = observableArray([])
+const allMillisecondsToObserve = reduceObservableArray(
     timers,
-    0,
-    (oldResult, newTimer) => oldResult + newTimer.milliseconds.value,
-    (oldResult, oldTimer) => oldResult - oldTimer.milliseconds.value,
+    observableArray<number>([]),
+    (arr, timerObs) => {
+        arr.push(timerObs.milliseconds)
+        return arr
+    },
+    (arr, timerObs, i) => {
+        arr.splice(i, 1)
+        return arr
+    }
 )
-export const highestTimerMilliseconds = reduceObservableArray(
-    timers,
-    0,
-    (oldResult, newTimer) => oldResult >= newTimer.milliseconds.value ? oldResult : newTimer.milliseconds.value,
-    () => timers.elems.reduce((a,b) => Math.min(a,b.milliseconds.value), 0),
-)
+export const totalMilliseconds = mapObservable(allMillisecondsToObserve, allTimers => {
+    return reduceObservableArray(
+        allTimers,
+        0,
+        (oldResult, newMs) => oldResult + newMs,
+        (oldResult, oldMs) => oldResult - oldMs,
+    )
+})
 
-// oldResult >= newTimer.milliseconds.value ? oldResult : newTimer.milliseconds.value
-// () => timers.elems.reduce((a, b) => Math.min(a, b.milliseconds.value), 0),
+export const highestTimerMilliseconds = reduceObservableArray(
+    allMillisecondsToObserve,
+    0,
+    (oldResult, newTimer) => oldResult >= newTimer.value ? oldResult : newTimer.value,
+    () => timers.elems.reduce((a,b) => Math.min(a, b.milliseconds.value), 0),
+)
 
 export function addNewTimer(name: string) {
     const timer = newTimerByName(name)

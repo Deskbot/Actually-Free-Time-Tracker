@@ -135,3 +135,19 @@ export function joinObservables<
 
     return result
 }
+
+export function implodeObservables<T>(arr: ObservableArray<Observable<T>>): ObservableArray<T> {
+    const result = observableArray<T>([])
+
+    arr.onPush(obs => obs.onChange(val => result.push(val)))
+    arr.onRemove(obs => {
+        obs.onChange(val => {
+            const i = result.elems.indexOf(val)
+            if (i !== -1) {
+                result.remove(i)
+            }
+        })
+    })
+
+    return result
+}

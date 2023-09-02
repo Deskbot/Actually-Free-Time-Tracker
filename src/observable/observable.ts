@@ -11,8 +11,12 @@ export type ObservableArray<T> = {
 
 export type Observable<T> = {
     value: T
-    onChange(handler: (newVal: T) => void): void
+    onChange(handler: (newVal: T) => void, runNow?: boolean): void
     set(newVal: T): void
+}
+
+export type TupleOfObservables<T extends readonly any[]> = {
+    readonly [Index in keyof T]: Observable<T[Index]>
 }
 
 export function observable<T>(initialValue: T, isEqual: Equality<T> = tripleEquals): Observable<T> {
@@ -20,8 +24,11 @@ export function observable<T>(initialValue: T, isEqual: Equality<T> = tripleEqua
 
     return {
         value: initialValue,
-        onChange(handler) {
+        onChange(handler, runNow = false) {
             events.listen(handler)
+            if (runNow) {
+                handler(this.value)
+            }
         },
         set(newVal) {
             if (!isEqual(newVal, this.value)) {
@@ -100,6 +107,31 @@ export function reduceObservableArray<T, U>(
         const newResult = onRemove(result.value, elem, i)
         result.set(newResult)
     })
+
+    return result
+}
+
+export function joinObservables<
+    const T extends TupleOfObservables<any>,
+    A extends { [Index in keyof T]: T[Index] extends Observable<infer E> ? E : never },
+    U
+>(
+    observables: T,
+    joiner: (...sources: A) => U
+): Observable<U> {
+    function getResult() {
+        return joiner(...observables.map(obs => obs.value) as unknown as A)
+    }
+
+    const result = observable(getResult(), tripleEquals)
+
+    function update() {
+        return result.set(getResult())
+    }
+
+    for (const obs of observables) {
+        obs.onChange(update)
+    }
 
     return result
 }

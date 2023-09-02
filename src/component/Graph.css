@@ -1,13 +1,15 @@
 .graph {
+    align-items: end;
     display: flex;
     gap: 0.5rem;
-    height: 500px;
-    width: 100%;
+    max-height: 500px;
     overflow-x: scroll;
+    width: 100%;
 }
 
 .bar {
     background-color: rgb(150, 202, 211);
     flex-shrink: 1;
+    overflow: hidden;
     writing-mode: sideways-lr;
 }

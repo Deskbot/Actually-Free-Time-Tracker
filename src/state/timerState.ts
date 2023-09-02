@@ -18,6 +18,9 @@ export const highestTimerMilliseconds = reduceObservableArray(
     () => timers.elems.reduce((a,b) => Math.min(a,b.milliseconds.value), 0),
 )
 
+// oldResult >= newTimer.milliseconds.value ? oldResult : newTimer.milliseconds.value
+// () => timers.elems.reduce((a, b) => Math.min(a, b.milliseconds.value), 0),
+
 export function addNewTimer(name: string) {
     const timer = newTimerByName(name)
     timers.push(timer)

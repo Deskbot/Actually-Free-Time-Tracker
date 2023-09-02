@@ -4,13 +4,12 @@ import { ObservableArray, observableArray, reduceObservableArray } from "../obse
 type LocalStorageTimers = TimerStatic[]
 
 export const timers: ObservableArray<Timer> = observableArray([]);
-// export const totalMilliseconds = reduceObservableArray(
-//     timers,
-//     0,
-//     (oldResult, newTimer) => oldResult + newTimer.value.milliseconds,
-//     (oldResult, oldTimer) => oldResult - oldTimer.value.milliseconds,
-//     tripleEquals,
-// )
+export const totalMilliseconds = reduceObservableArray(
+    timers,
+    0,
+    (oldResult, newTimer) => oldResult + newTimer.milliseconds.value,
+    (oldResult, oldTimer) => oldResult - oldTimer.milliseconds.value,
+)
 export const highestTimerMilliseconds = reduceObservableArray(
     timers,
     0,

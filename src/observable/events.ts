@@ -19,6 +19,13 @@ export class Events<T = undefined> implements Emitter<T> {
     }
 
     listen(handle: Handler<T>) {
-        this.handlers.push(handle)
+        const uniqueHandler: Handler<T> = val => handle(val)
+        this.handlers.push(uniqueHandler)
+        return () => this.stopListening(uniqueHandler)
+    }
+
+    private stopListening(handle: Handler<T>) {
+        const index = this.handlers.indexOf(handle)
+        this.handlers.splice(index, 1)
     }
 }

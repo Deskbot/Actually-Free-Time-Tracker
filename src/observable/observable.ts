@@ -5,13 +5,13 @@ export type ObservableArray<T> = {
     elems: T[]
     push(val: T): void
     remove(i: number): void
-    onPush(handler: (newVal: T) => void): void
-    onRemove(handler: (oldValue: T, i: number) => void): void
+    onPush(handler: (newVal: T) => void): () => void
+    onRemove(handler: (oldValue: T, i: number) => void): () => void
 }
 
 export type Observable<T> = {
     value: T
-    onChange(handler: (newVal: T) => void, runNow?: boolean): void
+    onChange(handler: (newVal: T) => void, runNow?: boolean): () => void
     set(newVal: T): void
 }
 
@@ -25,10 +25,11 @@ export function observable<T>(initialValue: T, isEqual: Equality<T> = tripleEqua
     return {
         value: initialValue,
         onChange(handler, runNow = false) {
-            events.listen(handler)
+            const stopListening = events.listen(handler)
             if (runNow) {
                 handler(this.value)
             }
+            return stopListening
         },
         set(newVal) {
             if (!isEqual(newVal, this.value)) {
@@ -56,10 +57,12 @@ export function observableArray<T>(arr: T[]): ObservableArray<T> {
             }
         },
         onPush(handler) {
-            pushEvents.listen(handler)
+            const stopListening = pushEvents.listen(handler)
+            return stopListening
         },
         onRemove(handler) {
-            removeEvents.listen(([val, i]) => handler(val, i))
+            const stopListening = removeEvents.listen(([val, i]) => handler(val, i))
+            return stopListening
         },
     }
 }
@@ -137,16 +140,19 @@ export function joinObservables<
 }
 
 export function implodeObservables<T>(arr: ObservableArray<Observable<T>>): ObservableArray<T> {
-    const result = observableArray<T>([])
+    const result = observableArray<T>(arr.elems.map(obs => obs.value))
 
-    arr.onPush(obs => obs.onChange(val => result.push(val)))
-    arr.onRemove(obs => {
-        obs.onChange(val => {
-            const i = result.elems.indexOf(val)
-            if (i !== -1) {
-                result.remove(i)
-            }
-        })
+    const observableClosers = new Map<Observable<T>, () => void>()
+
+    arr.onPush((obs) => {
+        const close = obs.onChange(result.push)
+        observableClosers.set(obs, close)
+    })
+    arr.onRemove((obs) => {
+        const close = observableClosers.get(obs)
+        if (close) {
+            close()
+        }
     })
 
     return result

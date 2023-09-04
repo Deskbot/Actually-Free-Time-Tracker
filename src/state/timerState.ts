@@ -1,34 +1,23 @@
 import { Timer, TimerStatic, endInterval, newTimerByName, startInterval, timerFromStatic } from "../domain/Timer";
-import { Observable, ObservableArray, mapObservable, mapObservableArray, observableArray, reduceObservableArray } from "../observable/observable";
+import { ObservableArray, implodeObservables, mapObservableArray, observableArray, reduceObservableArray } from "../observable/observable";
 
 type LocalStorageTimers = TimerStatic[]
 
 export const timers: ObservableArray<Timer> = observableArray([])
-const allMillisecondsToObserve = reduceObservableArray(
-    timers,
-    observableArray<number>([]),
-    (arr, timerObs) => {
-        arr.push(timerObs.milliseconds)
-        return arr
-    },
-    (arr, timerObs, i) => {
-        arr.splice(i, 1)
-        return arr
-    }
+
+const allMillisecondsToObserve = implodeObservables(mapObservableArray(timers,timer => timer.milliseconds))
+
+export const totalMilliseconds = reduceObservableArray(
+    allMillisecondsToObserve,
+    0,
+    (oldResult, newMs) => oldResult + newMs,
+    (oldResult, oldMs) => oldResult - oldMs,
 )
-export const totalMilliseconds = mapObservable(allMillisecondsToObserve, allTimers => {
-    return reduceObservableArray(
-        allTimers,
-        0,
-        (oldResult, newMs) => oldResult + newMs,
-        (oldResult, oldMs) => oldResult - oldMs,
-    )
-})
 
 export const highestTimerMilliseconds = reduceObservableArray(
     allMillisecondsToObserve,
     0,
-    (oldResult, newTimer) => oldResult >= newTimer.value ? oldResult : newTimer.value,
+    (oldResult, newMs) => oldResult >= newMs ? oldResult : newMs,
     () => timers.elems.reduce((a,b) => Math.min(a, b.milliseconds.value), 0),
 )
 

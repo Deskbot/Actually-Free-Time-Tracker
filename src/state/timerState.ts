@@ -5,7 +5,7 @@ type LocalStorageTimers = TimerStatic[]
 
 export const timers: ObservableArray<Timer> = observableArray([])
 
-const allMillisecondsToObserve = implodeObservables(mapObservableArray(timers,timer => timer.milliseconds))
+const allMillisecondsToObserve = implodeObservables(mapObservableArray(timers, timer => timer.milliseconds))
 
 export const totalMilliseconds = reduceObservableArray(
     allMillisecondsToObserve,

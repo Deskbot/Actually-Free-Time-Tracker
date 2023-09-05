@@ -14,3 +14,10 @@ export function setTheme(className: string) {
 
     document.body.classList.add(className)
 }
+
+window.addEventListener("load", () => {
+    const className = localStorage.getItem("theme")
+    if (className) {
+        document.body.classList.add(className)
+    }
+})

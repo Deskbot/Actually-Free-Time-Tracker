@@ -9,5 +9,43 @@
 }
 
 body {
+    background-color: var(--background-color);
+    color: var(--text-color);
     margin: 0 0.5rem;
+}
+
+body, body.theme-classic {
+    --background-color: white;
+    --button-color: #E9E9ED;
+    --border-color: #8F8F9D;
+    --text-color: black;
+    --highlight-color: rgb(150, 202, 211);
+}
+
+body.theme-goth {
+    --background-color: black;
+    --button-color: #8F8F9D;
+    --border-color: #E9E9ED;
+    --text-color: white;
+    --highlight-color: #a696d3;
+}
+
+body.theme-toilet-bowl {
+    --background-color: white;
+    --button-color: #8F8F9D;
+    --border-color: rgb(104, 67, 50);
+    --text-color: rgb(104, 67, 50);
+    --highlight-color: #d9d056;
+}
+
+body.theme-british-sky {
+    --background-color: white;
+    --button-color: #E9E9ED;
+    --border-color: #8F8F9D;
+    --text-color: black;
+    --highlight-color: #8F8F9D;
+}
+
+button {
+    border: 1px solid var(--border-color);
 }

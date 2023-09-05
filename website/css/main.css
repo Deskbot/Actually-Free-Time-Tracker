@@ -32,7 +32,7 @@ body.theme-goth {
 
 body.theme-toilet-bowl {
     --background-color: white;
-    --button-color: #8F8F9D;
+    --button-color: #E9E9ED;
     --border-color: rgb(104, 67, 50);
     --text-color: rgb(104, 67, 50);
     --highlight-color: #d9d056;
@@ -47,5 +47,6 @@ body.theme-british-sky {
 }
 
 button {
+    background-color: var(--button-color);
     border: 1px solid var(--border-color);
 }

@@ -1,5 +1,5 @@
 import { option, select } from "ariamis";
-import { setTheme, themeNames } from "../state/themeState";
+import { setTheme, themes } from "../state/themeState";
 
 export function ThemePicker() {
     function onChange(this: HTMLSelectElement) {
@@ -9,6 +9,6 @@ export function ThemePicker() {
     return select(
         { name: "theme" },
         { change: onChange },
-        themeNames.map(theme => option([theme]))
+        Object.entries(themes).map(([className, name]) => option({ value: className }, [name]))
     )
 }

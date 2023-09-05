@@ -1,16 +1,16 @@
-export const themeNames: ReadonlyArray<string> = [
-    "Sky",
-    "Goth",
-    "Toilet Bowl",
-    "British Sky",
-]
+export const themes = {
+    "theme-classic": "Classic",
+    "theme-goth": "Goth",
+    "theme-toilet-bowl": "Toilet Bowl",
+    "theme-british-sky": "British Sky",
+}
 
-export function setTheme(themeName: string) {
-    localStorage.setItem("theme", themeName)
+export function setTheme(className: string) {
+    localStorage.setItem("theme", className)
 
-    for (const name of themeNames) {
-        document.body.classList.remove(name)
+    for (const className of Object.keys(themes)) {
+        document.body.classList.remove(className)
     }
 
-    document.body.classList.add(themeName)
+    document.body.classList.add(className)
 }

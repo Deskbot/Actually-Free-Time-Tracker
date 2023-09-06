@@ -56,6 +56,10 @@ button, select {
     color: var(--button-text-color);
 }
 
+button:focus, input:focus, select:focus {
+    outline: 1px solid var(--highlight-color);
+}
+
 input {
     border: 1px solid var(--border-color);
     color: var(--input-text-color);

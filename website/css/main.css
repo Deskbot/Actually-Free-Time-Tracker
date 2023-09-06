@@ -16,37 +16,47 @@ body {
 
 body, body.theme-classic {
     --background-color: white;
-    --button-color: #E9E9ED;
+    --button-background-color: #E9E9ED;
+    --button-text-color: var(--text-color);
     --border-color: #8F8F9D;
+    --input-text-color: var(--text-color);
     --text-color: black;
     --highlight-color: rgb(150, 202, 211);
 }
 
 body.theme-goth {
     --background-color: black;
-    --button-color: #8F8F9D;
+    --button-text-color: black;
+    --button-background-color: var(--highlight-color);
     --border-color: #E9E9ED;
+    --input-text-color: black;
     --text-color: white;
     --highlight-color: #a696d3;
 }
 
 body.theme-toilet-bowl {
     --background-color: white;
-    --button-color: #E9E9ED;
-    --border-color: rgb(104, 67, 50);
-    --text-color: rgb(104, 67, 50);
+    --button-background-color: rgb(226, 209, 198);
+    --border-color: rgb(97, 71, 58);
+    --text-color: rgb(97, 71, 58);
     --highlight-color: #d9d056;
 }
 
 body.theme-british-sky {
     --background-color: white;
-    --button-color: #E9E9ED;
+    --button-background-color: #E9E9ED;
     --border-color: #8F8F9D;
     --text-color: black;
-    --highlight-color: #8F8F9D;
+    --highlight-color: #E9E9ED;
 }
 
-button {
-    background-color: var(--button-color);
+button, select {
+    background-color: var(--button-background-color);
     border: 1px solid var(--border-color);
+    color: var(--button-text-color);
+}
+
+input {
+    border: 1px solid var(--border-color);
+    color: var(--input-text-color);
 }

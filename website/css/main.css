@@ -43,11 +43,11 @@ body.theme-toilet-bowl {
 }
 
 body.theme-british-sky {
-    --background-color: white;
-    --button-background-color: #E9E9ED;
-    --border-color: #8F8F9D;
+    --background-color: #E9E9ED;
+    --button-background-color: white;
+    --border-color: black;
     --text-color: black;
-    --highlight-color: #E9E9ED;
+    --highlight-color: white;
 }
 
 button, select {

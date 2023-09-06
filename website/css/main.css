@@ -36,9 +36,9 @@ body.theme-goth {
 
 body.theme-toilet-bowl {
     --background-color: white;
-    --button-background-color: rgb(226, 209, 198);
-    --border-color: rgb(97, 71, 58);
-    --text-color: rgb(97, 71, 58);
+    --button-background-color: #a4918c69;
+    --border-color: rgb(87, 66, 55);
+    --text-color: rgb(87, 66, 55);
     --highlight-color: #d9d056;
 }
 

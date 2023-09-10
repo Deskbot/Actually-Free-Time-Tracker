@@ -39,8 +39,8 @@ body.theme-goth {
     --border-color: white;
     --text-color: white;
 
-    --button-background-color: var(--purple);
-    --button-text-color: black;
+    --button-background-color: black;
+    --button-text-color: white;
     --input-text-color: black;
     --input-background-color: white;
 

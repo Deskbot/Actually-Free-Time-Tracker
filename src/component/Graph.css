@@ -9,7 +9,8 @@
 
 .bar {
     align-items: center;
-    background-color: var(--highlight-color);
+    background-color: var(--highlight-background-color);
+    color: var(--highlight-text-color);
     display: flex;
     flex-direction: column;
     flex-shrink: 1;

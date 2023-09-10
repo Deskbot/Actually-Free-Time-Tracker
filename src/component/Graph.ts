@@ -9,7 +9,7 @@ import "./Graph.css";
 export function Graph() {
     return div({ className: "graph" }, [
         fromObservableArray(
-            mapObservableArray(timers, timer => Bar(timer))
+            mapObservableArray(timers, Bar)
         )
     ])
 }
@@ -19,9 +19,9 @@ function Bar(timer: Timer) {
         [timer.milliseconds, highestTimerMilliseconds],
         (mine, highest) => {
             if (highest === 0) {
-                return 1
+                return 100
             } else {
-                return mine / highest
+                return 100 * mine / highest
             }
         }
     )
@@ -30,9 +30,9 @@ function Bar(timer: Timer) {
         [timer.milliseconds, totalMilliseconds],
         (mine, total) => {
             if (total === 0) {
-                return 1
+                return 100
             } else {
-                return mine / total
+                return 100 * mine / total
             }
         }
     )
@@ -43,7 +43,7 @@ function Bar(timer: Timer) {
         fromObservable(timer.name, name => div({ className: "name", title: name }, [name])),
     ])
 
-    percentOfHighest.onChange(p => elem.style.height = (p * 100) + "%", true)
+    percentOfHighest.onChange(p => elem.style.height = p + "%", true)
 
     return elem
 }

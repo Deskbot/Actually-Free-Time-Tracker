@@ -26,9 +26,9 @@ body, body.theme-classic {
 
 body.theme-goth {
     --background-color: black;
-    --button-text-color: black;
-    --button-background-color: var(--highlight-color);
-    --border-color: #E9E9ED;
+    --button-text-color: white;
+    --button-background-color: black;
+    --border-color: var(--highlight-color);
     --input-text-color: black;
     --text-color: white;
     --highlight-color: #a696d3;

@@ -1,5 +1,5 @@
 import { Timer, TimerStatic, endInterval, newTimerByName, startInterval, timerFromStatic } from "../domain/Timer";
-import { ObservableArray, implodeObservables, mapObservableArray, observableArray, reduceObservableArray } from "../observable/observable";
+import { ObservableArray, observableArray, implodeObservables, mapObservableArray, reduceObservableArray } from "../observable/observableArray";
 
 type LocalStorageTimers = TimerStatic[]
 

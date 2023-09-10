@@ -1,4 +1,5 @@
-import { Observable, ObservableArray } from "../observable/observable";
+import { Observable } from "../observable/observable";
+import { ObservableArray } from "../observable/observableArray";
 import { contents } from "./contents";
 
 export function fromObservable<T>(observable: Observable<T>, mapper: (val: T) => Node): Node {

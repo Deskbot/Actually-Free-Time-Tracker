@@ -1,10 +1,10 @@
-import { div } from "ariamis";
-import { flexGrow } from "../dom/flex";
-import { fromObservable, fromObservableArray } from "../dom/reactive";
-import { Timer } from "../domain/Timer";
-import { joinObservables, mapObservableArray } from "../observable/observable";
-import { highestTimerMilliseconds, timers, totalMilliseconds } from "../state/timerState";
-import "./Graph.css";
+import { div } from "ariamis"
+import { flexGrow } from "../dom/flex"
+import { fromObservable, fromObservableArray } from "../dom/reactive"
+import { Timer } from "../domain/Timer"
+import { joinObservables, mapObservableArray } from "../observable/observableArray"
+import { highestTimerMilliseconds, timers, totalMilliseconds } from "../state/timerState"
+import "./Graph.css"
 
 export function Graph() {
     return div({ className: "graph" }, [

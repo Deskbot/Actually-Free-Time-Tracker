@@ -61,6 +61,7 @@ function unfocusTimer() {
     }
 }
 
+let finishedLoading = false
 window.addEventListener("load", () => {
     const storedTimerJson = localStorage.getItem("timers")
     if (storedTimerJson == null) {
@@ -76,11 +77,16 @@ window.addEventListener("load", () => {
             focusTimer(timer)
         }
     }
+
+    finishedLoading = true
 })
 
 window.addEventListener("beforeunload", () => {
     unfocusTimer()
-    localStorage.setItem("timers", timersToJson(timers))
+
+    if (finishedLoading) {
+        localStorage.setItem("timers", timersToJson(timers))
+    }
 })
 
 function timersToJson(timers: ObservableArray<Timer>) {

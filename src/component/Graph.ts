@@ -39,7 +39,6 @@ function Bar(timer: Timer) {
 
     const elem = div({ className: "bar" }, [
         fromObservable(percentOfTotal, p => div({ className: "percentage" }, [p.toFixed(0) + "%"])),
-        flexGrow(),
         fromObservable(timer.name, name => div({ className: "name", title: name }, [name])),
     ])
 

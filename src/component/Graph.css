@@ -15,10 +15,14 @@
     flex-shrink: 1;
     justify-content: space-between;
     overflow: hidden;
-    padding: 0.5rem 0;
     width: 3rem;
 }
 
+.bar .percentage {
+    margin: 0.5rem 0;
+}
+
 .bar .name {
+    margin: 0.5rem 0;
     writing-mode: sideways-lr;
 }

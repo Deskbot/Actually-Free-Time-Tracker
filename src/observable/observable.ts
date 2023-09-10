@@ -145,7 +145,7 @@ export function implodeObservables<T>(arr: ObservableArray<Observable<T>>): Obse
     const observableClosers = new Map<Observable<T>, () => void>()
 
     arr.onPush((obs) => {
-        const close = obs.onChange(result.push)
+        const close = obs.onChange(val => result.push(val))
         observableClosers.set(obs, close)
     })
     arr.onRemove((obs) => {

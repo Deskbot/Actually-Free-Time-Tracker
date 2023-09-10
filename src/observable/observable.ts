@@ -4,9 +4,11 @@ import { Events } from "./events"
 export type ObservableArray<T> = {
     elems: T[]
     push(val: T): void
+    replace(i: number, val: T): void
     remove(i: number): void
     onPush(handler: (newVal: T) => void): () => void
     onRemove(handler: (oldValue: T, i: number) => void): () => void
+    onReplace(handler: (oldValue: T, i: number, newValue: T) => void): () => void
 }
 
 export type Observable<T> = {
@@ -43,6 +45,7 @@ export function observable<T>(initialValue: T, isEqual: Equality<T> = tripleEqua
 export function observableArray<T>(arr: T[]): ObservableArray<T> {
     const pushEvents = new Events<T>()
     const removeEvents = new Events<[T,number]>()
+    const replaceEvents = new Events<[T, number, T]>()
 
     return {
         elems: arr,
@@ -54,6 +57,17 @@ export function observableArray<T>(arr: T[]): ObservableArray<T> {
             if (i < this.elems.length) {
                 const val = this.elems.splice(i, 1)
                 removeEvents.emit([val[0], i])
+            } else {
+                console.warn("Failed to remove element", i, "doesn't exist in array.")
+            }
+        },
+        replace(i, val) {
+            if (i < this.elems.length) {
+                const old = this.elems[i]
+                this.elems[i] = val
+                replaceEvents.emit([old, i, val])
+            } else {
+                console.warn("Failed to replace element", i, "doesn't exist in array.")
             }
         },
         onPush(handler) {
@@ -61,9 +75,13 @@ export function observableArray<T>(arr: T[]): ObservableArray<T> {
             return stopListening
         },
         onRemove(handler) {
-            const stopListening = removeEvents.listen(([val, i]) => handler(val, i))
+            const stopListening = removeEvents.listen(args => handler(...args))
             return stopListening
         },
+        onReplace(handler) {
+            const stopListening = replaceEvents.listen(args => handler(...args))
+            return stopListening
+        }
     }
 }
 
@@ -84,6 +102,7 @@ export function mapObservableArray<T, U>(arr: ObservableArray<T>, mapper: (val: 
 
     arr.onPush(val => resultArr.push(mapper(val)))
     arr.onRemove((val, i) => resultArr.remove(i))
+    arr.onReplace((oldVal, i, newVal) => resultArr.replace(i, mapper(newVal)))
 
     return resultArr
 }
@@ -93,6 +112,7 @@ export function reduceObservableArray<T, U>(
     initial: U,
     onPush: (oldResult: U, val: T) => U,
     onRemove: (oldResult: U, val: T, i: number) => U,
+    onReplace: (oldResult: U, oldVal: T, i: number, newVal: T) => U,
     equals: Equality<U> = tripleEquals,
 ): Observable<U> {
     let result = observable(initial, equals)
@@ -108,6 +128,10 @@ export function reduceObservableArray<T, U>(
     })
     arr.onRemove((elem, i) => {
         const newResult = onRemove(result.value, elem, i)
+        result.set(newResult)
+    })
+    arr.onReplace((oldElem, i, newElem) => {
+        const newResult = onReplace(result.value, oldElem, i, newElem)
         result.set(newResult)
     })
 
@@ -144,15 +168,37 @@ export function implodeObservables<T>(arr: ObservableArray<Observable<T>>): Obse
 
     const observableClosers = new Map<Observable<T>, () => void>()
 
-    arr.onPush((obs) => {
-        const close = obs.onChange(val => result.push(val))
+    function startListening(obs: Observable<T>) {
+        const close = obs.onChange((val) => {
+            const i = arr.elems.indexOf(obs)
+            if (i < arr.elems.length) {
+                result.replace(i, val)
+            } else {
+                console.error("Expected element", i, "to exist in array.")
+            }
+        })
         observableClosers.set(obs, close)
-    })
-    arr.onRemove((obs) => {
+    }
+
+    function stopListening(obs: Observable<T>) {
         const close = observableClosers.get(obs)
         if (close) {
             close()
         }
+    }
+
+    arr.onPush((obs) => {
+        result.push(obs.value)
+        startListening(obs)
+    })
+    arr.onRemove((obs, i) => {
+        result.remove(i)
+        stopListening(obs)
+    })
+    arr.onReplace((oldObs, i, newObs) => {
+        result.replace(i, newObs.value)
+        stopListening(oldObs)
+        startListening(newObs)
     })
 
     return result

@@ -1,6 +1,5 @@
 import { Observable, ObservableArray } from "../observable/observable";
 import { contents } from "./contents";
-import { removeAllChildren } from "./utils";
 
 export function fromObservable<T>(observable: Observable<T>, mapper: (val: T) => Node): Node {
     const elem = contents()
@@ -21,6 +20,7 @@ export function fromObservableArray(arr: ObservableArray<Node>): Node {
 
     arr.onPush((child) => node.appendChild(child))
     arr.onRemove((child, i) => node.removeChild(child))
+    arr.onReplace((oldChild, i, newChild) => node.replaceChild(oldChild, newChild))
 
     return node
 }

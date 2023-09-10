@@ -12,13 +12,16 @@ export const totalMilliseconds = reduceObservableArray(
     0,
     (oldResult, newMs) => oldResult + newMs,
     (oldResult, oldMs) => oldResult - oldMs,
+    (oldResult, oldVal, i, newVal) => oldResult - oldVal + newVal,
 )
 
+const computeHighest = () => Math.min(...timers.elems.map(timer => timer.milliseconds.value))
 export const highestTimerMilliseconds = reduceObservableArray(
     allMillisecondsToObserve,
     0,
     (oldResult, newMs) => oldResult >= newMs ? oldResult : newMs,
-    () => timers.elems.reduce((a,b) => Math.min(a, b.milliseconds.value), 0),
+    computeHighest,
+    computeHighest,
 )
 
 export function addNewTimer(name: string) {

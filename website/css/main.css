@@ -8,25 +8,30 @@
     margin: 0;
 }
 
+::selection {
+    background-color: var(--selection-background-color);
+}
+
 body {
     background-color: var(--background-color);
     color: var(--text-color);
     margin: 0 0.5rem;
+
+    --button-text-color: var(--text-color);
+    --input-text-color: var(--text-color);
+    --selection-background-color: var(--highlight-color);
 }
 
 body, body.theme-classic {
     --background-color: white;
     --button-background-color: #E9E9ED;
-    --button-text-color: var(--text-color);
     --border-color: #8F8F9D;
-    --input-text-color: var(--text-color);
     --text-color: black;
     --highlight-color: rgb(150, 202, 211);
 }
 
 body.theme-goth {
     --background-color: black;
-    --button-text-color: white;
     --button-background-color: black;
     --border-color: var(--highlight-color);
     --input-text-color: black;
@@ -39,7 +44,7 @@ body.theme-toilet-bowl {
     --button-background-color: #d3c2bb;
     --border-color: rgb(78, 60, 51);
     --text-color: rgb(78, 60, 51);
-    --highlight-color: #d9d056;
+    --highlight-color: #fffbc4;
 }
 
 body.theme-british-sky {
@@ -48,6 +53,8 @@ body.theme-british-sky {
     --border-color: black;
     --text-color: black;
     --highlight-color: white;
+
+    --selection-background-color: #f2f3ae;
 }
 
 button, select {

@@ -5,6 +5,7 @@ import { Timer } from "../domain/Timer"
 import { joinObservables, mapObservableArray } from "../observable/observableArray"
 import { highestTimerMilliseconds, timers, totalMilliseconds } from "../state/timerState"
 import "./Graph.css"
+import { mapObservable } from "../observable/observable"
 
 export function Graph() {
     return div({ className: "graph" }, [
@@ -37,12 +38,15 @@ function Bar(timer: Timer) {
         }
     )
 
+    const readablePercentOfTotal = mapObservable(percentOfTotal, p => p.toFixed(0) + "%")
+
     const elem = div({ className: "bar" }, [
-        fromObservable(percentOfTotal, p => div({ className: "percentage" }, [p.toFixed(0) + "%"])),
-        fromObservable(timer.name, name => div({ className: "name", title: name }, [name])),
+        fromObservable(readablePercentOfTotal, p => div({ className: "percentage" }, [p])),
+        fromObservable(timer.name, name => div({ className: "name" }, [name])),
     ])
 
     percentOfHighest.onChange(p => elem.style.height = p + "%", true)
+    joinObservables([readablePercentOfTotal, timer.name], (p, n) => elem.title = `${n} ${p}`)
 
     return elem
 }

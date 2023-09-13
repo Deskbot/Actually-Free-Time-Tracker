@@ -25,5 +25,6 @@
 
 .bar .name {
     margin: 0.5rem 0;
-    writing-mode: sideways-lr;
+    writing-mode: vertical-lr; /* this is just for chrome where the next line isn't supported */
+    writing-mode: sideways-lr; /* this is better */
 }

@@ -19,7 +19,7 @@ function Bar(timer: Timer) {
         [timer.milliseconds, highestTimerMilliseconds],
         (mine, highest) => {
             if (highest === 0) {
-                return 100
+                return 0
             } else {
                 return 100 * mine / highest
             }
@@ -30,7 +30,7 @@ function Bar(timer: Timer) {
         [timer.milliseconds, totalMilliseconds],
         (mine, total) => {
             if (total === 0) {
-                return 100
+                return 0
             } else {
                 return 100 * mine / total
             }

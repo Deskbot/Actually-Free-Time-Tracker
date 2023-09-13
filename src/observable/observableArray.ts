@@ -102,7 +102,8 @@ export function joinObservables<
     U
 >(
     observables: T,
-    joiner: (...sources: A) => U
+    joiner: (...sources: A) => U,
+    runNow: boolean = false
 ): Observable<U> {
     function getResult() {
         return joiner(...observables.map(obs => obs.value) as unknown as A)
@@ -115,7 +116,7 @@ export function joinObservables<
     }
 
     for (const obs of observables) {
-        obs.onChange(update)
+        obs.onChange(update, runNow)
     }
 
     return result

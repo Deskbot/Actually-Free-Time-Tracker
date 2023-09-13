@@ -1,11 +1,10 @@
 import { div } from "ariamis"
-import { flexGrow } from "../dom/flex"
 import { fromObservable, fromObservableArray } from "../dom/reactive"
 import { Timer } from "../domain/Timer"
+import { mapObservable } from "../observable/observable"
 import { joinObservables, mapObservableArray } from "../observable/observableArray"
 import { highestTimerMilliseconds, timers, totalMilliseconds } from "../state/timerState"
 import "./Graph.css"
-import { mapObservable } from "../observable/observable"
 
 export function Graph() {
     return div({ className: "graph" }, [
@@ -45,7 +44,10 @@ function Bar(timer: Timer) {
         fromObservable(timer.name, name => div({ className: "name" }, [name])),
     ])
 
+    // update height of bar
     percentOfHighest.onChange(p => elem.style.height = p + "%", true)
+
+    // update title
     joinObservables([readablePercentOfTotal, timer.name], (p, n) => elem.title = `${n} ${p}`)
 
     return elem

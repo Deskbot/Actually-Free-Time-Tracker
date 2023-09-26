@@ -1,8 +1,4 @@
-const mode = process.env["mode"] === "PRODUCTION"
-    ? "production"
-    : "development"
-
-const production = mode === "production"
+const isProduction = process.env["MODE"] === "production"
 
 module.exports = {
 
@@ -55,7 +51,7 @@ module.exports = {
     // Different strategies for building source maps exist,
     // each with trade-offs in terms of build speed and how detailed the information is.
     // https://webpack.js.org/configuration/devtool/
-    devtool: production
+    devtool: isProduction
         ? "none"  // no source maps in production
         : "eval-source-map", // "Recommended choice for development builds with maximum performance."
 }

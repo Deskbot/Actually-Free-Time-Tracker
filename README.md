@@ -2,8 +2,16 @@
 
 ## Build
 
+Dev:
+
 ```
 npm run build
+```
+
+Prod:
+
+```
+npm run build-prod
 ```
 
 ## Run

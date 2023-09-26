@@ -1,4 +1,6 @@
+
 const isProduction = process.env["MODE"] === "production"
+const mode = isProduction ? "production" : "development"
 
 module.exports = {
 
@@ -52,6 +54,6 @@ module.exports = {
     // each with trade-offs in terms of build speed and how detailed the information is.
     // https://webpack.js.org/configuration/devtool/
     devtool: isProduction
-        ? "none"  // no source maps in production
+        ? undefined  // no source maps in production
         : "eval-source-map", // "Recommended choice for development builds with maximum performance."
 }

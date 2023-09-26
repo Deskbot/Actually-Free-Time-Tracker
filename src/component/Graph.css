@@ -28,6 +28,6 @@
 
 .bar .name {
     margin: 0.5rem 0;
-    writing-mode: vertical-lr; /* this is just for chrome where the next line isn't supported */
+    writing-mode: tb; /* this is just for chrome where the next line isn't supported */
     writing-mode: sideways-lr; /* this is better */
 }

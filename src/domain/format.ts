@@ -9,11 +9,8 @@ export function formatTime(milliseconds: number) {
     const andSeconds = seconds % 60
 
     const minutesStr = formatNum(minutes) + "m"
-    if (minutes < 10) {
-        return align(minutesStr + " " + formatNum(andSeconds) + "s")
-    }
     if (minutes < 60) {
-        return align(minutesStr)
+        return align(minutesStr + " " + formatNum(andSeconds) + "s")
     }
 
     const hours = Math.floor(minutes / 60)

@@ -65,17 +65,16 @@ function unfocusTimer() {
 let finishedLoading = false
 window.addEventListener("load", () => {
     const storedTimerJson = localStorage.getItem(keyTimers)
-    if (storedTimerJson == null) {
-        return
-    }
 
-    const storedTimers: LocalStorageTimers = JSON.parse(storedTimerJson)
+    if (storedTimerJson != null) {
+        const storedTimers: LocalStorageTimers = JSON.parse(storedTimerJson)
 
-    for (const staticTimer of storedTimers) {
-        const timer = timerFromStatic(staticTimer)
-        timers.push(timer)
-        if (timer.isFocused.value) {
-            focusTimer(timer)
+        for (const staticTimer of storedTimers) {
+            const timer = timerFromStatic(staticTimer)
+            timers.push(timer)
+            if (timer.isFocused.value) {
+                focusTimer(timer)
+            }
         }
     }
 

@@ -1,4 +1,5 @@
 import { observable } from "../observable/observable"
+import { keyTheme } from "./localStorage"
 
 export const themes = {
     "theme-classic": "Classic",
@@ -10,7 +11,7 @@ export const themes = {
 export const currentThemeClass = observable("")
 
 export function setTheme(className: string) {
-    localStorage.setItem("theme", className)
+    localStorage.setItem(keyTheme, className)
 
     for (const className of Object.keys(themes)) {
         document.body.classList.remove(className)
@@ -22,7 +23,7 @@ export function setTheme(className: string) {
 }
 
 window.addEventListener("load", () => {
-    const className = localStorage.getItem("theme")
+    const className = localStorage.getItem(keyTheme)
     if (className) {
         setTheme(className)
     }

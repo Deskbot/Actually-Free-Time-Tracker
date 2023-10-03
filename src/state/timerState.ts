@@ -1,5 +1,6 @@
 import { Timer, TimerStatic, endInterval, newTimerByName, startInterval, timerFromStatic } from "../domain/Timer";
 import { ObservableArray, observableArray, implodeObservables, mapObservableArray, reduceObservableArray } from "../observable/observableArray";
+import { keyTimers } from "./localStorage";
 
 type LocalStorageTimers = TimerStatic[]
 
@@ -63,7 +64,7 @@ function unfocusTimer() {
 
 let finishedLoading = false
 window.addEventListener("load", () => {
-    const storedTimerJson = localStorage.getItem("timers")
+    const storedTimerJson = localStorage.getItem(keyTimers)
     if (storedTimerJson == null) {
         return
     }
@@ -85,7 +86,7 @@ window.addEventListener("beforeunload", () => {
     unfocusTimer()
 
     if (finishedLoading) {
-        localStorage.setItem("timers", timersToJson(timers))
+        localStorage.setItem(keyTimers, timersToJson(timers))
     }
 })
 

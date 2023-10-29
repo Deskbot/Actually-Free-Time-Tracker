@@ -8,6 +8,7 @@ export type Timer = {
     readonly isFocused: Observable<boolean>
     readonly milliseconds: Observable<number>
     readonly intervals: Interval[]
+    reset(): void
 }
 
 export type TimerStatic = {
@@ -25,7 +26,7 @@ export function newTimerByName(name: string): Timer {
     return timer
 }
 
-export function timerFromStatic(staticTimer: TimerStatic) {
+export function timerFromStatic(staticTimer: TimerStatic): Timer {
     return new TimerImpl(staticTimer)
 }
 
@@ -57,10 +58,19 @@ class TimerImpl implements Timer {
         this.isFocused.onChange(isFocused => this.onFocusChange(isFocused))
     }
 
+    reset() {
+        this.intervals.splice(0)
+        this.updateMilliseconds()
+    }
+
+    private updateMilliseconds() {
+        this.milliseconds.set(sumIntervalDurations(this.intervals))
+    }
+
     private onFocusChange(isFocused: boolean) {
         if (isFocused) {
             this.interval = window.setInterval(() => {
-                this.milliseconds.set(sumIntervalDurations(this.intervals))
+                this.updateMilliseconds()
             }, 500)
         } else {
             if (this.interval !== undefined) {

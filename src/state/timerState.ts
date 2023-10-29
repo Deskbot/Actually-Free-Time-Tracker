@@ -33,7 +33,7 @@ export function addNewTimer(name: string) {
 export function resetAllTimers() {
     unfocusTimer()
     for (const elem of timers.elems) {
-        elem.intervals.splice(0)
+        elem.reset()
     }
 }
 

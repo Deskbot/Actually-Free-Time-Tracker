@@ -2,6 +2,12 @@
 
 ## Build
 
+Init:
+
+```
+npm ci
+```
+
 Dev:
 
 ```
